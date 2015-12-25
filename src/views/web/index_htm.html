@@ -51,6 +51,29 @@
 
 </div>
 
+<div class="section scrollspy" id="work">
+    <div class="container">
+        <h4 class="header text_b">That's where single JSON data with body is loaded.</h4>
+        <h4>and if isRead equals false text is highlighted.</h4>
+        <div class="row userListsingle" >
+            
+        </div>
+        <h6 class="header text_b" style="color:black;">* Click image to load more data</h6>
+    </div>
+
+</div>
+
+<div class="section scrollspy" id="">
+    <div class="container">
+        <h4 class="header text_b">That's where single JSON data is deleted.</h4>
+        <div class="row userListdelete" >
+            
+        </div>
+        <h6 class="header text_b" style="color:black;">* Click image to delete data</h6>
+    </div>
+
+</div>
+
 <!--Parallax-->
 
 
@@ -75,6 +98,8 @@
 
  // jQuery AJAX call for JSON
 
+//That's where the JSON data is loaded.
+
   $.getJSON( '/api/message', function( data ) {
          
         // For each item in our JSON, add a table row and cells to the content string
@@ -89,6 +114,70 @@
           
 
        });
+
+
+
+//That's where single JSON data is loaded and if isRead = false text is highlighted.
+
+
+  $.getJSON( '/api/message/2', function( data ) {
+         
+        // For each item in our JSON, add a table row and cells to the content string
+        
+            
+           var tableContent = '<div class="s12 m4 l4"> <div class="card"> <div class="card-image waves-effect waves-block waves-light" style="height:50%;"> <img class="activator"src="/static/img/parallax1.png"> </div><div class="card-content"> <span class="card-title activator grey-text text-darken-4" >Subject: ' + data.subject + '<i class="mdi-navigation-more-vert right"></i></span> <p><a href="#" id="highlightText">Body: '+ data.body +'</a></p></div><div class="card-reveal"> <span class="card-title grey-text text-darken-4">Preview:'+data.preview+' <i class="mdi-navigation-close right"></i></span> <p>isRead:  '+ data.isRead + '</p><p>ts: '+ data.ts +'</p></div></div></div>';
+
+           $(".userListsingle").append(tableContent);
+
+           if(data.isRead == false){
+                 document.getElementById("highlightText").style.backgroundColor = "yellow";
+                 // var innerHTML = inputText.innerHTML;
+                 // console.log(innerHTML);
+                  //alert(innerHTML);
+              }
+        
+
+        // Inject the whole content string into our existing HTML table
+          
+
+       });
+
+
+//That's where single JSON data is deleted.
+
+
+  $.getJSON( '/api/message/3', function( data ) {
+         
+        // For each item in our JSON, add a table row and cells to the content string
+        
+            
+           var tableContent = '<div class="s12 m4 l4"> <div class="card"> <div class="card-image waves-effect waves-block waves-light" id="deletedata" style="height:50%;"> <img class="activator"  src="/static/img/project6.jpeg"> </div><div class="card-content"> <span class="card-title activator grey-text text-darken-4">Subject: ' + data.subject + '<i class="mdi-navigation-more-vert right"></i></span> <p><a href="#">Body: '+ data.body +'</a></p></div><div class="card-reveal"> <span class="card-title grey-text text-darken-4"> <i class="mdi-navigation-close right">Preview:'+data.preview+'</i></span> <p>isRead:  '+ data.isRead + '</p><p>ts: '+ data.ts +'</p></div></div></div>';
+
+           $(".userListdelete").append(tableContent);
+        
+
+        // Inject the whole content string into our existing HTML table
+          //get a reference to the element
+        var myBtn = document.getElementById('deletedata');
+
+        //add event listener
+        myBtn.addEventListener('click', function(event) {
+                  $.ajax({
+                url: '/api/message/3',
+                type: 'DELETE',
+                success: function(result) {
+                    alert("data deleted");
+                    location.reload();
+                }
+            });
+
+       });
+
+ 
+  });
+
+
+
           
 
 </script>
